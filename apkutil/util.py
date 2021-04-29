@@ -68,14 +68,14 @@ def sign(apk_path):
     ks_pass = ''
 
     try:
-        with open(home_dir + "/apkutil.json") as f:
+        with open(home_dir + "/.apkutil.json") as f:
             config = json.load(f)
             keystore_path = config['keystore_path'].replace('~', home_dir)
             ks_key_alias = config['ks-key-alias']
             ks_pass = config['ks-pass']
 
     except:
-        print('Please place `~/apkutil.json` containing the keystore information')
+        print('Please place `~/.apkutil.json` containing the keystore information')
         return
 
     try:
@@ -83,7 +83,7 @@ def sign(apk_path):
             errs = '{0} is not found.'.format(apk_path)
             raise Exception(errs)
 
-        apksigner_path = glob.glob(home_dir + '/Library/Android/sdk/build-tools/*/apksigner')[0]
+        apksigner_path = 'apksigner'
         apksigner_cmd = [apksigner_path]
         apksigner_cmd.append('sign')
         apksigner_cmd.extend(['-ks', keystore_path])
@@ -109,7 +109,7 @@ def sign(apk_path):
 def get_packagename(apk_path):
     try:
         home_dir = os.environ['HOME']
-        aapt_path = glob.glob(home_dir + '/Library/Android/sdk/build-tools/*/aapt')[0]
+        aapt_path = 'aapt'
         aapt_cmd = [aapt_path]
         aapt_cmd.append('l')
         aapt_cmd.append('-a')
@@ -133,7 +133,7 @@ def get_packagename(apk_path):
 def get_screenshot():
     try:
         home_dir = os.environ['HOME']
-        adb_path = glob.glob(home_dir + '/Library/Android/sdk/platform-tools/adb')[0]
+        adb_path ='adb'
         now = datetime.datetime.now()
         timestamp = now.strftime("%Y-%m-%d-%H-%M-%S")
         screenshot_file = 'screenshot-' + timestamp + '.png'
